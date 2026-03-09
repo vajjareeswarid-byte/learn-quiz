@@ -108,7 +108,7 @@ def logout():
 # ---------- ADMIN PANEL ----------
 @app.route("/admin")
 def admin():
-    return render_template("admin_panal.html")
+    return render_template("admin_panel.html")
 
 # ---------- ADD SUBJECT ----------
 @app.route("/add_subject",methods=["GET","POST"])
@@ -234,4 +234,5 @@ def view_results():
 # ---------- RUN ----------
 if __name__ == "__main__":
     app.run()
+
 
