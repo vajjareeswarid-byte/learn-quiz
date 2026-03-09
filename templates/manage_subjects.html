@@ -5,124 +5,117 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
+
 body{
     margin:0;
+    font-family:Arial;
+    background:linear-gradient(135deg,#667eea,#764ba2);
     min-height:100vh;
-    background:linear-gradient(135deg,#6a0dad,#8e44ad);
-    font-family:'Segoe UI',Arial;
-    padding:40px 20px;
+    padding:40px;
 }
 
 .container{
-    max-width:1000px;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    max-width:800px;
     margin:auto;
+    box-shadow:0 15px 35px rgba(0,0,0,0.2);
 }
 
 h2{
     text-align:center;
+    margin-bottom:25px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    background:#667eea;
     color:white;
-    margin-bottom:30px;
+    padding:10px;
 }
 
-.grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-    gap:20px;
-}
-
-.card{
-    background:white;
-    padding:20px;
-    border-radius:15px;
-    box-shadow:0 15px 30px rgba(0,0,0,0.2);
+td{
+    padding:10px;
     text-align:center;
-    transition:0.3s;
+    border-bottom:1px solid #ddd;
 }
 
-.card:hover{
-    transform:translateY(-5px);
-    box-shadow:0 20px 40px rgba(0,0,0,0.3);
-}
-
-.subject-name{
-    font-size:18px;
-    font-weight:600;
-    margin-bottom:15px;
-    color:#6a0dad;
+tr:hover{
+    background:#f2f2f2;
 }
 
 .btn{
-    display:inline-block;
-    padding:8px 15px;
-    margin:5px;
-    border:none;
-    border-radius:8px;
-    font-size:13px;
-    font-weight:600;
-    cursor:pointer;
+    padding:6px 12px;
     text-decoration:none;
-    transition:0.3s;
+    border-radius:6px;
+    color:white;
+    font-size:13px;
 }
 
 .edit{
-    background:#6a0dad;
-    color:white;
-}
-
-.edit:hover{
-    background:#4b0082;
+    background:#28a745;
 }
 
 .delete{
-    background:#e74c3c;
-    color:white;
-}
-
-.delete:hover{
-    background:#c0392b;
+    background:#dc3545;
 }
 
 .back{
     display:block;
+    margin-top:20px;
     text-align:center;
-    margin-top:30px;
-    color:white;
     text-decoration:none;
-    font-size:15px;
+    color:#667eea;
 }
 
-.back:hover{
-    text-decoration:underline;
-}
 </style>
 </head>
 
 <body>
 
 <div class="container">
-    <h2>Manage Subjects</h2>
 
-    <div class="grid">
-        {% for s in subjects %}
-        <div class="card">
-            <div class="subject-name">
-                {{ s.name }}
-            </div>
+<h2>Manage Subjects</h2>
 
-            <a href="/edit_subject/{{ s.id }}" class="btn edit">
-                ✏ Edit
-            </a>
+<table>
 
-            <a href="/delete_subject/{{ s.id }}"
-               onclick="return confirm('Are you sure you want to delete this subject?')"
-               class="btn delete">
-                🗑 Delete
-            </a>
-        </div>
-        {% endfor %}
-    </div>
+<tr>
+<th>ID</th>
+<th>Subject</th>
+<th>Action</th>
+</tr>
 
-    <a href="/admin_panel" class="back">← Back to Admin Panel</a>
+{% for s in subjects %}
+
+<tr>
+<td>{{s.id}}</td>
+<td>{{s.name}}</td>
+
+<td>
+
+<a class="btn edit" href="/edit_subject/{{s.id}}">Edit</a>
+
+<a class="btn delete"
+href="/delete_subject/{{s.id}}"
+onclick="return confirm('Delete this subject?')">
+Delete
+</a>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+<a href="/admin" class="back">← Back to Admin</a>
+
 </div>
 
 </body>
