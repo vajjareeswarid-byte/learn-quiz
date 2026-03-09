@@ -1,43 +1,75 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Quiz System</title>
+<title>Online Quiz System</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
+
 body{
     margin:0;
     height:100vh;
     display:flex;
     justify-content:center;
     align-items:center;
-    background:linear-gradient(135deg,#6a0dad,#8e44ad);
-    font-family:Arial;
+    background:linear-gradient(135deg,#667eea,#764ba2);
+    font-family:Arial, Helvetica, sans-serif;
 }
-.box{
+
+.container{
     background:white;
-    padding:40px;
-    border-radius:15px;
+    padding:50px;
+    border-radius:18px;
     text-align:center;
-    width:350px;
+    width:400px;
+    box-shadow:0 20px 40px rgba(0,0,0,0.25);
 }
-a{
+
+h1{
+    margin-bottom:10px;
+    color:#333;
+}
+
+p{
+    color:#666;
+    margin-bottom:30px;
+}
+
+.btn{
     display:block;
-    margin:15px;
+    width:100%;
     padding:12px;
-    background:#6a0dad;
-    color:white;
+    margin:10px 0;
     text-decoration:none;
-    border-radius:8px;
+    background:#667eea;
+    color:white;
+    border-radius:10px;
+    font-weight:bold;
+    transition:0.3s;
 }
-a:hover{
-    background:#4b0082;
+
+.btn:hover{
+    background:#5a67d8;
 }
+
 </style>
 </head>
+
 <body>
-<div class="box">
-<h2>Online Quiz System</h2>
-<a href="/login">Login</a>
-<a href="/register">Register</a>
+
+<div class="container">
+
+<h1>Online Quiz System</h1>
+
+<p>Test your knowledge and improve your skills</p>
+
+<a href="/login" class="btn">Login</a>
+
+<a href="/register" class="btn">Register</a>
+
 </div>
+
 </body>
+</html>
+
 </html>
