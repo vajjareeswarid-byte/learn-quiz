@@ -2,75 +2,59 @@
 <html>
 <head>
 <title>Manage Subjects</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 
 body{
-    margin:0;
-    font-family:Arial;
-    background:linear-gradient(135deg,#667eea,#764ba2);
-    min-height:100vh;
-    padding:40px;
+font-family:Arial;
+background:linear-gradient(135deg,#667eea,#764ba2);
+padding:40px;
 }
 
 .container{
-    background:white;
-    padding:30px;
-    border-radius:15px;
-    max-width:800px;
-    margin:auto;
-    box-shadow:0 15px 35px rgba(0,0,0,0.2);
+background:white;
+padding:30px;
+border-radius:15px;
+max-width:800px;
+margin:auto;
+box-shadow:0 20px 40px rgba(0,0,0,0.2);
 }
 
 h2{
-    text-align:center;
-    margin-bottom:25px;
+text-align:center;
+margin-bottom:20px;
 }
 
 table{
-    width:100%;
-    border-collapse:collapse;
+width:100%;
+border-collapse:collapse;
 }
 
 th{
-    background:#667eea;
-    color:white;
-    padding:10px;
+background:#667eea;
+color:white;
+padding:10px;
 }
 
 td{
-    padding:10px;
-    text-align:center;
-    border-bottom:1px solid #ddd;
-}
-
-tr:hover{
-    background:#f2f2f2;
+padding:10px;
+text-align:center;
+border-bottom:1px solid #ddd;
 }
 
 .btn{
-    padding:6px 12px;
-    text-decoration:none;
-    border-radius:6px;
-    color:white;
-    font-size:13px;
+padding:6px 12px;
+border-radius:6px;
+text-decoration:none;
+color:white;
 }
 
 .edit{
-    background:#28a745;
+background:#28a745;
 }
 
 .delete{
-    background:#dc3545;
-}
-
-.back{
-    display:block;
-    margin-top:20px;
-    text-align:center;
-    text-decoration:none;
-    color:#667eea;
+background:#dc3545;
 }
 
 </style>
@@ -93,6 +77,7 @@ tr:hover{
 {% for s in subjects %}
 
 <tr>
+
 <td>{{s.id}}</td>
 <td>{{s.name}}</td>
 
@@ -102,7 +87,7 @@ tr:hover{
 
 <a class="btn delete"
 href="/delete_subject/{{s.id}}"
-onclick="return confirm('Delete this subject?')">
+onclick="return confirm('Delete subject?')">
 Delete
 </a>
 
@@ -113,8 +98,6 @@ Delete
 {% endfor %}
 
 </table>
-
-<a href="/admin" class="back">← Back to Admin</a>
 
 </div>
 
