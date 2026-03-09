@@ -7,7 +7,7 @@ app.secret_key = "quizsecret"
 
 # ---------- DATABASE ----------
 def get_db():
-    conn = sqlite3.connect("quiz.db")
+    conn = sqlite3.connect("/tmp/quiz.db")
     conn.row_factory = sqlite3.Row
     return conn
 
@@ -88,17 +88,16 @@ def register():
 
     if request.method == "POST":
 
+        name = request.form.get("name")
+        email = request.form.get("email")
+        password = request.form.get("password")
+
         conn = get_db()
         cur = conn.cursor()
 
         cur.execute(
         "INSERT INTO users(name,email,password,role) VALUES(?,?,?,?)",
-        (
-            request.form["name"],
-            request.form["email"],
-            request.form["password"],
-            "student"
-        ))
+        (name,email,password,"student"))
 
         conn.commit()
         conn.close()
@@ -114,12 +113,15 @@ def login():
 
     if request.method == "POST":
 
+        email = request.form.get("email")
+        password = request.form.get("password")
+
         conn = get_db()
         cur = conn.cursor()
 
         cur.execute(
         "SELECT * FROM users WHERE email=? AND password=?",
-        (request.form["email"], request.form["password"])
+        (email,password)
         )
 
         user = cur.fetchone()
@@ -147,7 +149,7 @@ def logout():
     return redirect("/")
 
 
-# ---------- ADMIN PANEL ----------
+# ---------- ADMIN ----------
 @app.route("/admin")
 def admin():
     return render_template("admin_panel.html")
@@ -159,12 +161,14 @@ def add_subject():
 
     if request.method == "POST":
 
+        name = request.form.get("name")
+
         conn = get_db()
         cur = conn.cursor()
 
         cur.execute(
         "INSERT INTO subjects(name) VALUES(?)",
-        (request.form["name"],))
+        (name,))
 
         conn.commit()
         conn.close()
@@ -197,111 +201,11 @@ def delete_subject(id):
     cur = conn.cursor()
 
     cur.execute("DELETE FROM subjects WHERE id=?", (id,))
-    
+
     conn.commit()
     conn.close()
 
     return redirect("/manage_subjects")
-
-
-# ---------- ADD UNIT ----------
-@app.route("/add_unit", methods=["GET","POST"])
-def add_unit():
-
-    conn = get_db()
-    cur = conn.cursor()
-
-    cur.execute("SELECT * FROM subjects")
-    subs = cur.fetchall()
-
-    if request.method == "POST":
-
-        cur.execute(
-        "INSERT INTO units(subject_id,name) VALUES(?,?)",
-        (
-            request.form["subject"],
-            request.form["unit"]
-        ))
-
-        conn.commit()
-        conn.close()
-
-        return redirect("/manage_units")
-
-    conn.close()
-
-    return render_template("add_unit.html",subs=subs)
-
-
-# ---------- MANAGE UNITS ----------
-@app.route("/manage_units")
-def manage_units():
-
-    conn = get_db()
-    cur = conn.cursor()
-
-    cur.execute("""
-    SELECT units.id,units.name,subjects.name AS subject
-    FROM units
-    JOIN subjects ON subjects.id = units.subject_id
-    """)
-
-    units = cur.fetchall()
-    conn.close()
-
-    return render_template("manage_units.html",units=units)
-
-
-# ---------- DELETE UNIT ----------
-@app.route("/delete_unit/<int:id>")
-def delete_unit(id):
-
-    conn = get_db()
-    cur = conn.cursor()
-
-    cur.execute("DELETE FROM units WHERE id=?", (id,))
-    
-    conn.commit()
-    conn.close()
-
-    return redirect("/manage_units")
-
-
-# ---------- ADD QUIZ ----------
-@app.route("/add_quiz", methods=["GET","POST"])
-def add_quiz():
-
-    conn = get_db()
-    cur = conn.cursor()
-
-    cur.execute("SELECT * FROM units")
-    units = cur.fetchall()
-
-    if request.method == "POST":
-
-        cur.execute("""
-        INSERT INTO questions(unit_id,level,question,o1,o2,o3,o4,answer)
-        VALUES(?,?,?,?,?,?,?,?)
-        """,
-        (
-            request.form["unit"],
-            request.form["level"],
-            request.form["question"],
-            request.form["o1"],
-            request.form["o2"],
-            request.form["o3"],
-            request.form["o4"],
-            request.form["answer"]
-        ))
-
-        conn.commit()
-        conn.close()
-
-        return redirect("/admin")
-
-    conn.close()
-
-    return render_template("add_quiz.html",units=units)
 
 
 # ---------- SUBJECT LIST ----------
@@ -334,12 +238,6 @@ def units(sid):
     return render_template("units.html",units=units)
 
 
-# ---------- LEVEL PAGE ----------
-@app.route("/levels/<int:uid>")
-def levels(uid):
-    return render_template("levels.html",uid=uid)
-
-
 # ---------- QUIZ ----------
 @app.route("/quiz/<int:uid>/<level>", methods=["GET","POST"])
 def quiz(uid, level):
@@ -349,7 +247,7 @@ def quiz(uid, level):
 
     cur.execute(
     "SELECT * FROM questions WHERE unit_id=? AND level=?",
-    (uid, level))
+    (uid,level))
 
     qs = cur.fetchall()
 
@@ -366,21 +264,6 @@ def quiz(uid, level):
     return render_template("quiz.html",qs=qs)
 
 
-# ---------- VIEW RESULTS ----------
-@app.route("/view_results")
-def view_results():
-
-    conn = get_db()
-    cur = conn.cursor()
-
-    cur.execute("SELECT * FROM results")
-    results = cur.fetchall()
-
-    conn.close()
-
-    return render_template("view_results.html",results=results)
-
-
 # ---------- RUN ----------
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=10000)
