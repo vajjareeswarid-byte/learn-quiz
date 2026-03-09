@@ -5,70 +5,87 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
+
 body{
     margin:0;
     height:100vh;
     display:flex;
     justify-content:center;
     align-items:center;
-    background:linear-gradient(135deg,#6a0dad,#8e44ad);
-    font-family:'Segoe UI',Arial;
+    background:linear-gradient(135deg,#667eea,#764ba2);
+    font-family:Arial, Helvetica, sans-serif;
 }
 
-.box{
+.card{
     background:white;
     padding:40px;
-    border-radius:18px;
-    width:380px;
+    border-radius:15px;
+    width:350px;
     text-align:center;
-    box-shadow:0 20px 40px rgba(0,0,0,0.25);
+    box-shadow:0 15px 35px rgba(0,0,0,0.2);
 }
 
 h2{
     margin-bottom:25px;
-    color:#6a0dad;
+    color:#333;
 }
 
 input{
     width:100%;
     padding:12px;
-    margin:15px 0;
+    border-radius:8px;
     border:1px solid #ccc;
-    border-radius:10px;
+    margin-bottom:15px;
+    font-size:14px;
+}
+
+input:focus{
+    border-color:#667eea;
+    outline:none;
 }
 
 button{
     width:100%;
     padding:12px;
-    background:#6a0dad;
-    color:white;
     border:none;
-    border-radius:10px;
+    border-radius:8px;
+    background:#667eea;
+    color:white;
+    font-size:15px;
     cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    background:#5a67d8;
 }
 
 .back{
-    display:block;
+    display:inline-block;
     margin-top:20px;
+    text-decoration:none;
+    color:#667eea;
+    font-size:14px;
 }
+
 </style>
 </head>
 
 <body>
 
-<div class="box">
-<h2>Add New Subject</h2>
+<div class="card">
 
-<form method="POST">
+<h2>Add Subject</h2>
 
-<input type="text" name="name"
-placeholder="Enter Subject Name" required>
+<form action="/add_subject" method="POST">
+
+<input type="text" name="name" placeholder="Enter Subject Name" required>
 
 <button type="submit">Add Subject</button>
 
 </form>
 
-<a href="/admin" class="back">← Back to Admin Panel</a>
+<a href="/admin" class="back">← Back to Admin</a>
 
 </div>
 
