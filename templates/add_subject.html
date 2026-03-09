@@ -35,45 +35,21 @@ input{
     margin:15px 0;
     border:1px solid #ccc;
     border-radius:10px;
-    font-size:14px;
-    transition:0.3s;
-}
-
-input:focus{
-    border-color:#6a0dad;
-    outline:none;
-    box-shadow:0 0 5px rgba(106,13,173,0.5);
 }
 
 button{
     width:100%;
     padding:12px;
-    margin-top:10px;
     background:#6a0dad;
     color:white;
     border:none;
     border-radius:10px;
-    font-size:15px;
-    font-weight:600;
     cursor:pointer;
-    transition:0.3s;
-}
-
-button:hover{
-    background:#4b0082;
-    transform:translateY(-2px);
 }
 
 .back{
     display:block;
     margin-top:20px;
-    text-decoration:none;
-    color:#6a0dad;
-    font-size:14px;
-}
-
-.back:hover{
-    text-decoration:underline;
 }
 </style>
 </head>
@@ -81,16 +57,19 @@ button:hover{
 <body>
 
 <div class="box">
-    <h2>Add New Subject</h2>
+<h2>Add New Subject</h2>
 
-    <form method="post">
-        <input type="text" name="subject_name"
-               placeholder="Enter Subject Name" required>
+<form method="POST">
 
-        <button type="submit">Add Subject</button>
-    </form>
+<input type="text" name="name"
+placeholder="Enter Subject Name" required>
 
-    <a href="/admin_panel" class="back">← Back to Admin Panel</a>
+<button type="submit">Add Subject</button>
+
+</form>
+
+<a href="/admin" class="back">← Back to Admin Panel</a>
+
 </div>
 
 </body>
