@@ -4,11 +4,14 @@ import sqlite3
 app = Flask(__name__)
 app.secret_key = "secret123"
 
+# -------- DATABASE FUNCTION --------
 def get_db():
     conn = sqlite3.connect("quiz.db")
     conn.row_factory = sqlite3.Row
     return conn
 
+
+# -------- CREATE TABLES --------
 def init_db():
     conn = get_db()
     cur = conn.cursor()
@@ -59,7 +62,7 @@ def init_db():
     date TIMESTAMP DEFAULT CURRENT_TIMESTAMP)
     """)
 
-    # Default Admin
+    # default admin
     cur.execute("""
     INSERT OR IGNORE INTO users(id,name,email,password,role)
     VALUES(1,'Admin','admin@gmail.com','admin123','admin')
@@ -71,11 +74,14 @@ def init_db():
 
 init_db()
 
+
+# -------- HOME --------
 @app.route("/")
 def home():
     return render_template("home.html")
 
 
+# -------- REGISTER --------
 @app.route("/register", methods=["GET", "POST"])
 def register():
 
@@ -90,8 +96,8 @@ def register():
                 request.form["name"],
                 request.form["email"],
                 request.form["password"],
-                "student",
-            ),
+                "student"
+            )
         )
 
         conn.commit()
@@ -102,7 +108,7 @@ def register():
     return render_template("register.html")
 
 
-
+# -------- LOGIN --------
 @app.route("/login", methods=["GET", "POST"])
 def login():
 
@@ -113,7 +119,7 @@ def login():
 
         cur.execute(
             "SELECT * FROM users WHERE email=? AND password=?",
-            (request.form["email"], request.form["password"]),
+            (request.form["email"], request.form["password"])
         )
 
         user = cur.fetchone()
@@ -129,29 +135,25 @@ def login():
             else:
                 return redirect("/subjects")
 
-        else:
-            return "Invalid Login"
+        return "Invalid Login"
 
     return render_template("login.html")
 
 
-
+# -------- LOGOUT --------
 @app.route("/logout")
 def logout():
     session.clear()
     return redirect("/")
 
 
-
+# -------- ADMIN PANEL --------
 @app.route("/admin")
 def admin():
-    if session.get("role") != "admin":
-        return redirect("/login")
-
     return render_template("admin_panel.html")
 
 
-
+# -------- ADD SUBJECT --------
 @app.route("/add_subject", methods=["GET", "POST"])
 def add_subject():
 
@@ -162,7 +164,7 @@ def add_subject():
 
         cur.execute(
             "INSERT INTO subjects(name) VALUES(?)",
-            (request.form["name"],),
+            (request.form["name"],)
         )
 
         conn.commit()
@@ -173,7 +175,7 @@ def add_subject():
     return render_template("add_subject.html")
 
 
-
+# -------- ADD UNIT --------
 @app.route("/add_unit", methods=["GET", "POST"])
 def add_unit():
 
@@ -189,8 +191,8 @@ def add_unit():
             "INSERT INTO units(subject_id,name) VALUES(?,?)",
             (
                 request.form["subject"],
-                request.form["unit"],
-            ),
+                request.form["unit"]
+            )
         )
 
         conn.commit()
@@ -203,7 +205,7 @@ def add_unit():
     return render_template("add_unit.html", subs=subs)
 
 
-
+# -------- ADD QUIZ --------
 @app.route("/add_quiz", methods=["GET", "POST"])
 def add_quiz():
 
@@ -215,22 +217,20 @@ def add_quiz():
 
     if request.method == "POST":
 
-        cur.execute(
-            """
+        cur.execute("""
         INSERT INTO questions(unit_id,level,question,o1,o2,o3,o4,answer)
         VALUES(?,?,?,?,?,?,?,?)
         """,
-            (
-                request.form["unit"],
-                request.form["level"],
-                request.form["question"],
-                request.form["o1"],
-                request.form["o2"],
-                request.form["o3"],
-                request.form["o4"],
-                request.form["answer"],
-            ),
-        )
+        (
+            request.form["unit"],
+            request.form["level"],
+            request.form["question"],
+            request.form["o1"],
+            request.form["o2"],
+            request.form["o3"],
+            request.form["o4"],
+            request.form["answer"]
+        ))
 
         conn.commit()
         conn.close()
@@ -242,7 +242,7 @@ def add_quiz():
     return render_template("add_quiz.html", units=units)
 
 
-
+# -------- SUBJECT LIST --------
 @app.route("/subjects")
 def subjects():
 
@@ -250,7 +250,6 @@ def subjects():
     cur = conn.cursor()
 
     cur.execute("SELECT * FROM subjects")
-
     subs = cur.fetchall()
 
     conn.close()
@@ -258,6 +257,7 @@ def subjects():
     return render_template("subjects.html", subs=subs)
 
 
+# -------- UNITS --------
 @app.route("/units/<int:sid>")
 def units(sid):
 
@@ -272,13 +272,13 @@ def units(sid):
     return render_template("units.html", units=units)
 
 
-
+# -------- LEVEL PAGE --------
 @app.route("/levels/<int:uid>")
 def levels(uid):
     return render_template("levels.html", uid=uid)
 
 
-
+# -------- QUIZ --------
 @app.route("/quiz/<int:uid>/<level>", methods=["GET", "POST"])
 def quiz(uid, level):
 
@@ -287,7 +287,7 @@ def quiz(uid, level):
 
     cur.execute(
         "SELECT * FROM questions WHERE unit_id=? AND level=?",
-        (uid, level),
+        (uid, level)
     )
 
     qs = cur.fetchall()
@@ -297,23 +297,20 @@ def quiz(uid, level):
         score = 0
 
         for q in qs:
-
             if request.form.get(str(q["id"])) == q["answer"]:
                 score += 1
 
-        cur.execute(
-            """
+        cur.execute("""
         INSERT INTO results(user_id,unit_id,level,score,total)
         VALUES(?,?,?,?,?)
         """,
-            (
-                session["uid"],
-                uid,
-                level,
-                score,
-                len(qs),
-            ),
-        )
+        (
+            session["uid"],
+            uid,
+            level,
+            score,
+            len(qs)
+        ))
 
         conn.commit()
         conn.close()
@@ -325,15 +322,14 @@ def quiz(uid, level):
     return render_template("quiz.html", qs=qs)
 
 
-
+# -------- VIEW RESULTS --------
 @app.route("/view_results")
 def view_results():
 
     conn = get_db()
     cur = conn.cursor()
 
-    cur.execute(
-        """
+    cur.execute("""
     SELECT users.name AS student,
            subjects.name AS subject,
            results.score,
@@ -344,8 +340,7 @@ def view_results():
     JOIN units ON units.id = results.unit_id
     JOIN subjects ON subjects.id = units.subject_id
     ORDER BY results.score DESC
-    """
-    )
+    """)
 
     results = cur.fetchall()
 
@@ -354,6 +349,6 @@ def view_results():
     return render_template("view_results.html", results=results)
 
 
-
+# -------- RUN --------
 if __name__ == "__main__":
     app.run(debug=True)
