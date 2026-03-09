@@ -20,47 +20,47 @@ def init_db():
 
     cur.execute("""
     CREATE TABLE IF NOT EXISTS users(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT,
-    email TEXT,
-    password TEXT,
-    role TEXT)
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT,
+        email TEXT,
+        password TEXT,
+        role TEXT)
     """)
 
     cur.execute("""
     CREATE TABLE IF NOT EXISTS subjects(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT)
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT)
     """)
 
     cur.execute("""
     CREATE TABLE IF NOT EXISTS units(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    subject_id INTEGER,
-    name TEXT)
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        subject_id INTEGER,
+        name TEXT)
     """)
 
     cur.execute("""
     CREATE TABLE IF NOT EXISTS questions(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    unit_id INTEGER,
-    level TEXT,
-    question TEXT,
-    o1 TEXT,
-    o2 TEXT,
-    o3 TEXT,
-    o4 TEXT,
-    answer TEXT)
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        unit_id INTEGER,
+        level TEXT,
+        question TEXT,
+        o1 TEXT,
+        o2 TEXT,
+        o3 TEXT,
+        o4 TEXT,
+        answer TEXT)
     """)
 
     cur.execute("""
     CREATE TABLE IF NOT EXISTS results(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER,
-    unit_id INTEGER,
-    level TEXT,
-    score INTEGER,
-    total INTEGER)
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER,
+        unit_id INTEGER,
+        level TEXT,
+        score INTEGER,
+        total INTEGER)
     """)
 
     # default admin
@@ -119,7 +119,7 @@ def login():
 
         cur.execute(
         "SELECT * FROM users WHERE email=? AND password=?",
-        (request.form["email"],request.form["password"])
+        (request.form["email"], request.form["password"])
         )
 
         user = cur.fetchone()
@@ -174,21 +174,6 @@ def add_subject():
     return render_template("add_subject.html")
 
 
-# ---------- DELETE SUBJECT ----------
-@app.route("/delete_subject/<int:id>")
-def delete_subject(id):
-
-    conn = get_db()
-    cur = conn.cursor()
-
-    cur.execute("DELETE FROM subjects WHERE id=?", (id,))
-    
-    conn.commit()
-    conn.close()
-
-    return redirect("/manage_subjects")
-
-
 # ---------- MANAGE SUBJECTS ----------
 @app.route("/manage_subjects")
 def manage_subjects():
@@ -202,6 +187,21 @@ def manage_subjects():
     conn.close()
 
     return render_template("manage_subjects.html",subjects=subjects)
+
+
+# ---------- DELETE SUBJECT ----------
+@app.route("/delete_subject/<int:id>")
+def delete_subject(id):
+
+    conn = get_db()
+    cur = conn.cursor()
+
+    cur.execute("DELETE FROM subjects WHERE id=?", (id,))
+    
+    conn.commit()
+    conn.close()
+
+    return redirect("/manage_subjects")
 
 
 # ---------- ADD UNIT ----------
@@ -233,21 +233,6 @@ def add_unit():
     return render_template("add_unit.html",subs=subs)
 
 
-# ---------- DELETE UNIT ----------
-@app.route("/delete_unit/<int:id>")
-def delete_unit(id):
-
-    conn = get_db()
-    cur = conn.cursor()
-
-    cur.execute("DELETE FROM units WHERE id=?", (id,))
-    
-    conn.commit()
-    conn.close()
-
-    return redirect("/manage_units")
-
-
 # ---------- MANAGE UNITS ----------
 @app.route("/manage_units")
 def manage_units():
@@ -265,6 +250,21 @@ def manage_units():
     conn.close()
 
     return render_template("manage_units.html",units=units)
+
+
+# ---------- DELETE UNIT ----------
+@app.route("/delete_unit/<int:id>")
+def delete_unit(id):
+
+    conn = get_db()
+    cur = conn.cursor()
+
+    cur.execute("DELETE FROM units WHERE id=?", (id,))
+    
+    conn.commit()
+    conn.close()
+
+    return redirect("/manage_units")
 
 
 # ---------- ADD QUIZ ----------
@@ -334,7 +334,7 @@ def units(sid):
     return render_template("units.html",units=units)
 
 
-# ---------- LEVELS ----------
+# ---------- LEVEL PAGE ----------
 @app.route("/levels/<int:uid>")
 def levels(uid):
     return render_template("levels.html",uid=uid)
@@ -342,14 +342,14 @@ def levels(uid):
 
 # ---------- QUIZ ----------
 @app.route("/quiz/<int:uid>/<level>", methods=["GET","POST"])
-def quiz(uid,level):
+def quiz(uid, level):
 
     conn = get_db()
     cur = conn.cursor()
 
     cur.execute(
     "SELECT * FROM questions WHERE unit_id=? AND level=?",
-    (uid,level))
+    (uid, level))
 
     qs = cur.fetchall()
 
