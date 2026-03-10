@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Admin View Panel</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+body{
+margin:0;
+font-family:Segoe UI;
+background:linear-gradient(120deg,#6a11cb,#2575fc);
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+.container{
+background:white;
+padding:40px;
+border-radius:15px;
+width:600px;
+box-shadow:0 15px 40px rgba(0,0,0,0.3);
+text-align:center;
+}
+
+h2{
+margin-bottom:30px;
+color:#333;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:20px;
+}
+
+.card{
+background:#f4f6ff;
+padding:30px;
+border-radius:12px;
+transition:0.3s;
+cursor:pointer;
+}
+
+.card:hover{
+background:#6a11cb;
+color:white;
+transform:scale(1.05);
+}
+
+a{
+text-decoration:none;
+color:inherit;
+font-weight:bold;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Admin View Panel</h2>
+
+<div class="grid">
+
+<a href="/view_users">
+<div class="card">
+👥 View Users
+</div>
+</a>
+
+<a href="/view_subjects">
+<div class="card">
+📚 View Subjects
+</div>
+</a>
+
+<a href="/view_units">
+<div class="card">
+📖 View Units
+</div>
+</a>
+
+<a href="/view_materials">
+<div class="card">
+📂 View Materials
+</div>
+</a>
+
+</div>
+
+</div>
+
+</body>
+</html>
