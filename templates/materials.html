@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Study Materials</title>
+
+<style>
+
+body{
+font-family:Segoe UI;
+background:#eef2ff;
+margin:0;
+}
+
+.container{
+padding:40px;
+text-align:center;
+}
+
+.card{
+background:white;
+padding:20px;
+margin:20px;
+border-radius:10px;
+box-shadow:0 10px 20px rgba(0,0,0,0.2);
+}
+
+button{
+background:#6a11cb;
+border:none;
+padding:10px 20px;
+color:white;
+border-radius:8px;
+cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Study Materials</h2>
+
+{% for m in data %}
+
+<div class="card">
+
+<h3>{{m.title}}</h3>
+
+<a href="/static/uploads/{{m.file}}" target="_blank">
+<button>Open Material</button>
+</a>
+
+</div>
+
+{% endfor %}
+
+<br>
+
+<a href="/quiz/{{uid}}">
+<button>Start Quiz</button>
+</a>
+
+</div>
+
+</body>
+</html>
