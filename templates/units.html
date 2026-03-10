@@ -1,115 +1,73 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <title>Units</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
+
 body{
-    margin:0;
-    min-height:100vh;
-    background:#f4f0fa;
-    font-family:'Segoe UI',Arial;
+font-family:Segoe UI;
+background:#f2f2f2;
+margin:0;
 }
 
-/* Header */
-.header{
-    background:linear-gradient(135deg,#6a0dad,#8e44ad);
-    color:white;
-    padding:20px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-
-.header h2{
-    margin:0;
-}
-
-.logout{
-    background:white;
-    color:#6a0dad;
-    padding:8px 16px;
-    border-radius:20px;
-    text-decoration:none;
-    font-weight:600;
-    transition:0.3s;
-}
-
-.logout:hover{
-    background:#e6d6f5;
-}
-
-/* Container */
 .container{
-    max-width:1000px;
-    margin:auto;
-    padding:40px 20px;
+padding:40px;
+text-align:center;
 }
 
-/* Grid */
 .grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:25px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:20px;
 }
 
-/* Card */
 .card{
-    background:white;
-    padding:30px;
-    border-radius:18px;
-    text-align:center;
-    box-shadow:0 15px 30px rgba(0,0,0,0.1);
-    transition:0.3s;
+background:white;
+padding:30px;
+border-radius:12px;
+box-shadow:0 10px 20px rgba(0,0,0,0.2);
 }
 
-.card:hover{
-    transform:translateY(-6px);
-    box-shadow:0 20px 40px rgba(0,0,0,0.2);
+button{
+background:#6a11cb;
+border:none;
+padding:10px 20px;
+color:white;
+border-radius:8px;
+cursor:pointer;
 }
 
-.card a{
-    text-decoration:none;
-    font-size:17px;
-    font-weight:600;
-    color:#6a0dad;
-    display:block;
-}
-
-/* Back Button */
-.back{
-    display:block;
-    text-align:center;
-    margin-top:30px;
-    text-decoration:none;
-    color:#6a0dad;
-    font-weight:600;
-}
 </style>
+
 </head>
 
 <body>
 
-<div class="header">
-    <h2>Units</h2>
-    <a href="/logout" class="logout">Logout</a>
+<div class="container">
+
+<h2>Units</h2>
+
+<div class="grid">
+
+{% for u in units %}
+
+<div class="card">
+
+<h3>{{u.name}}</h3>
+
+<a href="/materials/{{u.id}}">
+<button>Study Material</button>
+</a>
+
 </div>
 
-<div class="container">
-    <div class="grid">
-        {% for u in units %}
-        <div class="card">
-            <a href="/quiz/{{ u.id }}">
-                {{ u.name }}
-            </a>
-        </div>
-        {% endfor %}
-    </div>
+{% endfor %}
 
-    <a href="/subjects" class="back">← Back to Subjects</a>
+</div>
+
 </div>
 
 </body>
 </html>
-           
